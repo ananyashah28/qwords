@@ -43,7 +43,7 @@ QWords is a terminal-based word guessing game where players try to guess a 5-let
 ### Running the Game
 
 ```bash
-python app.py
+python3 app.py
 ```
 
 ## How to Play

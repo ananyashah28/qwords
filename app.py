@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 QWords - A Wordle-like word guessing game
-Python 3.8 compatible implementation for SEG transformation demo
+Python 3.12+ implementation with modern language features
 """
 
 import random
@@ -147,7 +147,8 @@ def format_guess_display(guess_result):
     display = ""
     for i, letter in enumerate(guess_result.word):
         color = colors[guess_result.feedback[i]]
-        display += "{}{} {}{}".format(color, letter, colors['reset'], " ")
+        reset = colors['reset']
+        display += f"{color}{letter} {reset} "
     
     return display.strip()
 
@@ -160,7 +161,7 @@ def create_new_game():
     return game
 
 
-def make_guess(game, guess_word):
+def make_guess(game, guess_word) -> GuessResult | None:
     """Process a guess and update game state"""
     if game.game_over:
         return None
@@ -190,11 +191,11 @@ def display_game_board(game):
     print("-" * 25)
     
     for i, guess in enumerate(game.guesses):
-        print("Guess {}: {}".format(i + 1, format_guess_display(guess)))
+        print(f"Guess {i + 1}: {format_guess_display(guess)}")
     
     # Show remaining empty slots
     for i in range(len(game.guesses), game.max_guesses):
-        print("Guess {}: _ _ _ _ _".format(i + 1))
+        print(f"Guess {i + 1}: _ _ _ _ _")
     
     print("-" * 25)
 
@@ -221,7 +222,7 @@ def show_game_rules():
 
 
 def get_user_input(prompt):
-    """Get user input with Python 3.8 compatible method"""
+    """Get user input"""
     try:
         return input(prompt).strip()
     except KeyboardInterrupt:
@@ -239,7 +240,8 @@ def play_game():
     while not game.game_over:
         display_game_board(game)
         
-        print("\nGuesses remaining: {}".format(game.max_guesses - game.current_guess))
+        remaining = game.max_guesses - game.current_guess
+        print(f"\nGuesses remaining: {remaining}")
         guess = get_user_input("Enter your guess (or 'quit' to exit): ").upper()
         
         if guess == "QUIT":
@@ -251,23 +253,24 @@ def play_game():
             continue
         
         if not is_valid_word(guess):
-            print("'{}' must be exactly 5 letters with no numbers or symbols. Try again.".format(guess))
+            print(f"'{guess}' must be exactly 5 letters with no numbers or symbols. Try again.")
             continue
         
         result = make_guess(game, guess)
         if result:
-            print("\nYour guess: {}".format(format_guess_display(result)))
+            print(f"\nYour guess: {format_guess_display(result)}")
     
     # Game over - show final results
     display_game_board(game)
     
     if game.won:
         elapsed_time = time.time() - game.start_time
+        num_guesses = len(game.guesses)
         print("\nCongratulations! You won!")
-        print("You guessed '{}' in {} tries".format(game.target_word, len(game.guesses)))
-        print("Time taken: {:.1f} seconds".format(elapsed_time))
+        print(f"You guessed '{game.target_word}' in {num_guesses} tries")
+        print(f"Time taken: {elapsed_time:.1f} seconds")
     else:
-        print("\nGame Over! The word was: {}".format(game.target_word))
+        print(f"\nGame Over! The word was: {game.target_word}")
         print("Better luck next time!")
 
 
@@ -292,17 +295,18 @@ def main():
         show_main_menu()
         choice = get_user_input("Select an option (1-4): ")
         
-        if choice == "1":
-            play_game()
-        elif choice == "2":
-            show_game_rules()
-        elif choice == "3":
-            display_game_stats()
-        elif choice == "4":
-            print("Thanks for playing QWords!")
-            break
-        else:
-            print("Invalid choice. Please select 1-4.")
+        match choice:
+            case "1":
+                play_game()
+            case "2":
+                show_game_rules()
+            case "3":
+                display_game_stats()
+            case "4":
+                print("Thanks for playing QWords!")
+                break
+            case _:
+                print("Invalid choice. Please select 1-4.")
 
 
 if __name__ == "__main__":

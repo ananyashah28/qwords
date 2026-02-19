@@ -1,6 +1,6 @@
 # QWords - Word Guessing Game
 
-A Wordle-like word guessing game implemented in Python 3.8 for the AWS Transform demo.
+A Wordle-like word guessing game implemented in Python 3.12 with modern language features.
 
 ## Overview
 
@@ -17,8 +17,9 @@ QWords is a terminal-based word guessing game where players try to guess a 5-let
 ## Setup Instructions
 
 ### Prerequisites
-- Python 3.8 or higher
+- Python 3.12 or higher
 - Terminal with color support (most modern terminals)
+- `uv` package installer (recommended) or `pip`
 
 ### Installation
 
@@ -29,9 +30,9 @@ QWords is a terminal-based word guessing game where players try to guess a 5-let
 
 2. Create a virtual environment:
    ```bash
-   uv python install 3.8 --force
-   uv venv --python 3.8 .venv38
-   source .venv38/bin/activate  # On Windows: .venv38\Scripts\activate
+   uv python install 3.12
+   uv venv --python 3.12 .venv312
+   source .venv312/bin/activate  # On Windows: .venv312\Scripts\activate
    ```
 
 3. Install dependencies:
@@ -113,11 +114,15 @@ Your guess: H O U S E
 
 ## Technical Details
 
-- **Language**: Python 3.8
-- **Dependencies**: pytest==6.2.5
+- **Language**: Python 3.12
+- **Dependencies**: pytest>=7.0.0
 - **Architecture**: Single-file application (app.py)
 - **Word List**: Built-in list of 500+ common 5-letter words
 - **Storage**: In-memory game state (no persistent storage)
+- **Python 3.12 Features Used**:
+  - PEP 604 union type hints (using `|` operator instead of `typing.Union`)
+  - Match-case pattern matching statements (Python 3.10+)
+  - Modern f-string formatting
 
 ## Testing
 
